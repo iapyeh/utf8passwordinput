@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src="utf8passwordinput.js"></script>
+<style>
+    #see{
+        display:inline-block;
+        width:20px;
+        height:20px;
+        vertical-align: baseline;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <form id="form">
+        <p>Try Inputing Unicodes For Password</p>
+        <input type="hidden" id="pwd4Submit" value="">
+        Password:<input id="pwd4Input" type="text" size="30" autocomplete="off">
+        <span id="see">👁</span>
+        <input type="submit">
+    </form>
+    <hr>
+    Current Password Value: <span id="value"></span>
+    <script>
+        const pwdEle = document.getElementById('pwd4Input')
+        const seeEle = document.getElementById('see')
+        // Create Utf8PasswordInput instance.
+        const utf8Pwd = new Utf8PasswordInput(pwdEle,seeEle)
+        pwdEle.addEventListener('update', (evt)=>{
+            // Listen on "update" event for getting current password value
+            document.getElementById('value').innerText = evt.detail
+        })
+        document.getElementById('form').onsubmit = (evt)=>{
+            evt.preventDefault()
+            // set password value before submitting the form
+            document.getElementById('pwd4Submit').value = utf8Pwd.value
+            alert(`password to submit is "${utf8Pwd.value}"`)
+            return false
+        }
+    </script>
+</body>
+</html>

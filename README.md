@@ -25,3 +25,9 @@ The main program is utf8passwordinput.js. Please refer to demo.html for usage. T
 
 ## インストールと使用方法
 メインプログラムは utf8passwordinput.js です。 使用方法については、demo.htmlを参照してください。 これら 2 つのファイルを同じディレクトリにダウンロードし、demo.html を直接開いてブラウザでテストできます。
+
+## 💖 ✰
+- 如果你喜歡本專案,請惠賜一顆星星,讓我快樂一下。
+- If you like this project, please give it a star. I will feel very happy.
+- このプロジェクトが気に入ったら、スターを付けてください。 とても幸せな気持ちになります。
+

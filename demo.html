@@ -24,16 +24,17 @@
     <script>
         const pwdEle = document.getElementById('pwd4Input')
         const seeEle = document.getElementById('see')
-        // Create Utf8PasswordInput instance.
+        // Create Utf8PasswordInput instance. the second argument "seeEle" is optional.
         const utf8Pwd = new Utf8PasswordInput(pwdEle,seeEle)
         pwdEle.addEventListener('update', (evt)=>{
-            // Listen on "update" event for getting current password value
+            // Optionally, you can listen on "update" event for getting current password value
             document.getElementById('value').innerText = evt.detail
         })
         document.getElementById('form').onsubmit = (evt)=>{
             evt.preventDefault()
-            // set password value before submitting the form
+            // setting password value to the form before submitting it to server side.
             document.getElementById('pwd4Submit').value = utf8Pwd.value
+            // just for demo, nowhere to submit
             alert(`password to submit is "${utf8Pwd.value}"`)
             return false
         }

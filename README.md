@@ -22,7 +22,7 @@ HTML <input type="password">
 
 網路伺服器後台的使用者認證處理unicode密碼沒有任何問題，問題是在於使用者在網頁中無法輸入自己母語(unicode)的密碼，原因是HTML當中輸入密碼的欄位不接受unicode的輸入。這個小程式解決了這個問題。讓使用者能在網頁的密碼欄位中輸入母語做成的密碼。它使用一個一般文字欄位模擬密碼欄位的原理，凡是能輸入一般文字欄位的字元都能當成密碼傳送給伺服器後台。
 
-![這篇文章](https://www.ncsc.gov.uk/blog-post/the-logic-behind-three-random-words)主張隨便找三個單字當密碼就是好密碼，如果密碼欄位能接受unicode輸入，非英語國家的人就能運用這個原則從母語中選擇三個詞彙做出一個安全又好記憶的密碼。
+[英國國家資安中心發文](https://www.ncsc.gov.uk/blog-post/the-logic-behind-three-random-words)主張隨便找三個單字當密碼就是好密碼，如果密碼欄位能接受unicode輸入，非英語國家的人就能運用這個原則從母語中選擇三個詞彙做出一個安全又好記憶的密碼。
 
 ## Enable your website users to use their mother tongue (unicode characters) in passwords.
 

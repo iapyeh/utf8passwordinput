@@ -1,7 +1,12 @@
 /*
-2024/3/12 iapyeh@gmail.com
-Using a 'text-input' HTML element to mimic password input.
+Using a text-input HTML element to mimic password-input.
 Please see demo.html for usage.
+
+By: iapyeh@gmail.com
+2024/3/12 
+    go public
+2024/3/13
+    refine: set mininum length to 1 for deleteContentForward 
 */
 class Utf8PasswordInput{
     constructor(inputEle,seeEle){
@@ -45,7 +50,7 @@ class Utf8PasswordInput{
                 fireUpdateEvent()
             }else if (evt.inputType=='deleteContentForward'){
                 pos = evt.target.selectionStart
-                delLength = pos - self._pos
+                delLength = Math.max(1,pos - self._pos)
                 self.pwd.splice(pos,delLength)
                 inputEle.value = self._getpwd(self.see)
                 fireUpdateEvent()

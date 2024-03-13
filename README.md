@@ -1,5 +1,17 @@
 # utf8passwordinput
-## 讓網站使用者可以輸入中文做成的密碼。
+## 專案內容
+HTML <input type="password">
+element 本身不支援 Unicode 文字輸入。 為了解決此限制，本專案引入了一個 JavaScript class，可將文字輸入欄位轉換為密碼輸入欄位。 此類使網站使用者在創建密碼時能夠使用其母語中的 Unicode 字符，最終改善使用者體驗並可能增強密碼強度。
+
+## What is this
+The HTML <input type="password">
+element does not inherently support Unicode text entry. To address this limitation, this project introduces a JavaScript class that converts a text input field into a password input field. This class enables website users to utilize Unicode characters from their native languages when creating passwords, ultimately improving the user experience and potentially enhancing password strength.
+
+## このプロジェクトは何のためにあるのか
+HTML <input type="password">
+要素は本質的に Unicode テキスト入力をサポートしません。 この制限に対処するために、このプロジェクトでは、テキスト入力フィールドをパスワード入力フィールドに変換する JavaScript クラスを導入します。 このクラスを使用すると、Web サイト ユーザーがパスワードを作成するときに母国語の Unicode 文字を利用できるようになり、最終的にユーザー エクスペリエンスが向上し、パスワードの強度が向上する可能性があります。
+
+## 讓網站使用者可以輸入unicode做成的密碼。
 
 好的密碼有三個特性：字數長、變化多且容易記憶。資安專家要求密碼要混合英文字母大小寫、數字、符號，這樣所產生的密碼，只能符合字數夠、變化多的條件，很難記憶，不是好的密碼。人們設定簡單密碼只有一個原因：好記。為了好記憶，人們寧可冒著不安全的風險。可見得「好記」是密碼的關鍵。對於非英語母語者，例如台灣、日本、韓國、中國等，如果使用自己的母語作為密碼，那些產生的密碼就是能符合字數長、變化多且容易記憶的三個特性的好密碼。母語中的詩詞、諺語都是可以當密碼主幹的好素材。
 

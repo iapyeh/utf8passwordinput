@@ -1,4 +1,9 @@
 # utf8passwordinput
+
+
+https://github.com/iapyeh/utf8passwordinput/assets/4695577/57d318e1-205a-4f17-86be-623f2e6ae445
+
+
 ## 專案內容
 HTML <input type="password">
 element 本身不支援 Unicode 文字輸入。 為了解決此限制，本專案引入了一個 JavaScript class，可將文字輸入欄位轉換為密碼輸入欄位。 此類使網站使用者在創建密碼時能夠使用其母語中的 Unicode 字符，最終改善使用者體驗並可能增強密碼強度。

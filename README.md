@@ -48,6 +48,14 @@ The main program is utf8passwordinput.js. Please refer to demo.html for usage. T
 ## インストールと使用方法
 メインプログラムは utf8passwordinput.js です。 使用方法については、demo.htmlを参照してください。 これら 2 つのファイルを同じディレクトリにダウンロードし、demo.html を直接開いてブラウザでテストできます。
 
+## History
+- 2024/3/18
+   * feature: users could set "star" property to change placeholder("*") when inputing password, and the "star" value could be an unicode chareacter.
+- 2024/3/13
+   * bugfix: set mininum length to 1 for deleteContentForward event
+- 2024/3/12 
+   * Release
+
 ## 💖 ✰
 - 如果你喜歡本專案,請惠賜一顆星星,讓我快樂一下。
 - If you like this project, please give it a star. I will feel very happy.

@@ -1,42 +1,69 @@
 <html>
 <head>
-<script src="utf8passwordinput.js"></script>
-<style>
-    #see{
-        display:inline-block;
-        width:20px;
-        height:20px;
-        vertical-align: baseline;
-        cursor: pointer;
-    }
-</style>
+    <meta charset="utf8"/>
+    <script src="utf8passwordinput.js"></script>
+    <style>
+        #see{
+            display:inline-block;
+            width:20px;
+            height:20px;
+            vertical-align: baseline;
+            cursor: pointer;
+        }
+        .password{
+            display:inline-block;
+            height:25px;
+            width:350px;
+            margin:0px 5px;
+        }
+    </style>
 </head>
 <body>
     <form id="form">
-        <p>Try Inputing Unicodes For Password</p>
+        <p><b>utf8passwordinput</b></p>
+        <p>Placehoder
+            <select id="placeholder">
+                <option value="*">Legacy: *</option>
+                <option value="密">Tradition Chinese Chareactor: 密</option>
+                <option value="赞">Simplified Chinese Chareactor: 赞</option>
+                <option value="の">Japanese Chareactor: の</option>
+                <option value="지">Korean Chareactor: 지</option>
+                <option value="🇹🇼">Country Flag: 🇹🇼</option>
+                <option value="㊙">Symbol: ㊙</option>
+                <option value="⭆">Symbol: ⭆</option>
+                <option value="🍔">Emoji: 🍔</option>
+                <option value="😀">Emoji: 😀</option>
+                <option value="👩🏾">Skin Tone Emoji: 👩🏾</option>
+            </select>
+        </p>
         <input type="hidden" id="pwd4Submit" value="">
-        Password:<input id="pwd4Input" type="text" size="30" autocomplete="off">
+        Password:<input placeholder="input here" id="pwd4Input" type="text" class="password" autocomplete="off" autofocus>
         <span id="see">👁</span>
         <input type="submit">
     </form>
     <hr>
-    Current Password Value: <span id="value"></span>
+        Password:<span id="value"  class="password" style="border:solid 1px black"></span>
     <script>
         const pwdEle = document.getElementById('pwd4Input')
         const seeEle = document.getElementById('see')
-        // Create Utf8PasswordInput instance. the second argument "seeEle" is optional.
+        // Create Utf8PasswordInput instance.
         const utf8Pwd = new Utf8PasswordInput(pwdEle,seeEle)
         pwdEle.addEventListener('update', (evt)=>{
-            // Optionally, you can listen on "update" event for getting current password value
+            // Listen on "update" event for getting current password value
             document.getElementById('value').innerText = evt.detail
         })
         document.getElementById('form').onsubmit = (evt)=>{
             evt.preventDefault()
-            // setting password value to the form before submitting it to server side.
+            // get the password value before submitting the form
             document.getElementById('pwd4Submit').value = utf8Pwd.value
-            // just for demo, nowhere to submit
             alert(`password to submit is "${utf8Pwd.value}"`)
             return false
+        }
+        // customizing placeholder "*" for the password
+        // utf8Pwd.star = some unicode character
+        document.getElementById('placeholder').onchange = (evt)=>{
+            utf8Pwd.star = evt.currentTarget.value
+            pwdEle.value = utf8Pwd.getpwd()
         }
     </script>
 </body>

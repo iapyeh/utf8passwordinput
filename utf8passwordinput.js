@@ -1,14 +1,8 @@
 /*
+By: Hsin Yuan Yeh
 Using a text-input HTML element to mimic password-input.
 Please see demo.html for usage.
-
-By: iapyeh@gmail.com
-2024/3/12 
-    go public
-2024/3/13
-    refine: set mininum length to 1 for deleteContentForward 
-2024/3/19
-    refine: user could set "star" (placeholder "*") and "star" could be an unicode
+Version: 2024/4/18
 */
 class Utf8PasswordInput{
     constructor(inputEle,seeEle){

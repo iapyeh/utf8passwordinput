@@ -7,6 +7,8 @@ By: iapyeh@gmail.com
     go public
 2024/3/13
     refine: set mininum length to 1 for deleteContentForward 
+2024/3/19
+    refine: user could set "star" (placeholder "*") and "star" could be an unicode
 */
 class Utf8PasswordInput{
     constructor(inputEle,seeEle){
@@ -14,10 +16,18 @@ class Utf8PasswordInput{
         this.seeEle = seeEle
         this.pwd = []
         this.see = false
-        //hook listeners
+        this.star = '*'
+        //hooking event listeners for "input" element
         const self = this
         const fireUpdateEvent = ()=>{
             inputEle.dispatchEvent(new CustomEvent('update',{detail:self.value}))
+        }
+        const resetInputEleValue = (extraOffset)=>{
+            const pos = inputEle.selectionStart + (extraOffset || 0)
+            inputEle.value = self.getpwd(self.see)
+            // reposition the cursor
+            inputEle.selectionStart = pos
+            inputEle.selectionEnd = pos          
         }
         inputEle.addEventListener('beforeinput',(evt)=>{
             if (evt.inputType=='deleteContentBackward'){
@@ -26,104 +36,117 @@ class Utf8PasswordInput{
                 self._pos = evt.target.selectionEnd
             }else if (evt.inputType == 'insertFromPaste'){
                 self._pos = evt.target.selectionEnd
+            }else if (evt.inputType == 'compositionend'){
+                //this case dosen't happen
+                self._pos = evt.target.selectionEnd
             }
         })
         inputEle.addEventListener('input', (evt)=>{
             if (self.see) return
-            let pos,inserted,delLength
+            let pos,inserted,delLength,idx
             if (evt.inputType=='insertText'){
-                pos = evt.target.selectionStart - 1
-                for(let i=0;i<evt.data.length;i++){
-                    self.pwd.splice(pos,0,evt.data.substr(i,1))
-                    pos += 1
+                pos = evt.target.selectionStart - evt.data.length
+                idx = pos/self._starLen
+                for(const char of evt.data){
+                    self.pwd.splice(idx,0,char)
+                    idx += 1
                 }
-                inputEle.value = self._getpwd(self.see)
+                const extraOffset = (evt.data.length * self._starLen) - evt.data.length
+                resetInputEleValue(extraOffset) 
                 fireUpdateEvent()
-                // reposition cursor
-                inputEle.selectionStart = pos
-                inputEle.selectionEnd = pos
             }else if (evt.inputType=='deleteContentBackward'){
                 pos = evt.target.selectionStart
-                delLength = self._pos - pos
-                self.pwd.splice(pos,delLength)
-                inputEle.value = self._getpwd(self.see)
+                const idx0 = pos/self._starLen
+                const idx1 = self._pos/self._starLen
+                delLength = idx1 - idx0
+                self.pwd.splice(idx0,delLength)
+                resetInputEleValue() 
                 fireUpdateEvent()
             }else if (evt.inputType=='deleteContentForward'){
                 pos = evt.target.selectionStart
-                delLength = Math.max(1,pos - self._pos)
-                self.pwd.splice(pos,delLength)
-                inputEle.value = self._getpwd(self.see)
+                // testing on MacOS, Chrome, this is always 1
+                delLength = 1
+                idx = self._pos/self._starLen
+                self.pwd.splice(idx,delLength)
+                resetInputEleValue() 
                 fireUpdateEvent()
             }else if (evt.inputType == 'insertFromPaste'){
-                pos = evt.target.selectionStart
-                inserted = inputEle.value.substring(self._pos,pos)
-                for(let i=0;i<inserted.length;i++){
-                    self.pwd.splice(self._pos+i,0,inserted.substr(i,1))
+                //most unicodes are inserted by paste, such as "😀"
+                idx = self._pos/self._starLen
+                inserted = inputEle.value.substring(self._pos,evt.target.selectionStart)
+                let i = 0
+                for(const char of inserted){
+                    self.pwd.splice(idx+i,0,char)
+                    i += 1
                 }
-                inputEle.value = self._getpwd(self.see)
-                // reposition cursor
-                inputEle.selectionStart = pos
-                inputEle.selectionEnd = pos           
+                // help the cursor to posite correclty at the end of inserted text when self._starLen > 1 (eg.😀)
+                const extraOffset = (i * self._starLen) - inserted.length
+                resetInputEleValue(extraOffset)
                 fireUpdateEvent()
             }else{
-                //eg. historyUndo, insertCompositionText
-                //console.log(evt.inputType)
+                // eg. historyUndo, insertCompositionText
             }
         })
         inputEle.addEventListener('compositionend', (evt)=>{
+            //CKY chareactors are inputed 
             if (this.see) return
-            let dataLength = evt.data.length
-            let pos = evt.target.selectionStart - dataLength 
-            for(let i=0;i<evt.data.length;i++){
-                self.pwd.splice(pos,0,evt.data.substr(i,1))
-                pos += 1
+            let idx = (evt.target.selectionStart - evt.data.length)/self._starLen
+            let i = 0
+            for(const char of evt.data){
+                self.pwd.splice(idx + i,0,char)
+                i += 1
             }
-            inputEle.value = self._getpwd(self.see)
-            // reposition cursor
-            inputEle.selectionStart = pos
-            inputEle.selectionEnd = pos
+            const extraOffset = (i * self._starLen) - evt.data.length
+            resetInputEleValue(extraOffset)
             fireUpdateEvent()
         })
+        // hooking event listeners for "see" element
         if (seeEle){
             const showPassword = (evt)=>{
                 if (self.see) return //avoid double invoking by events
                 self.see = true
                 self._pos = inputEle.selectionStart
-                inputEle.value = self._getpwd(self.see)
+                inputEle.value = self.getpwd(self.see)
             }
             const hidePassword =  (evt)=>{
                 if (!self.see) return //avoid double invoking by events
                 self.value = inputEle.value
                 self.see = false
-                inputEle.value = self._getpwd(self.see)
+                inputEle.value = self.getpwd(self.see)
                 inputEle.focus()
                 inputEle.selectionStart = self._pos
                 inputEle.selectionEnd = self._pos
             }
-            seeEle.addEventListener('mousedown', showPassword)
-            seeEle.addEventListener('mouseup',hidePassword)
             seeEle.addEventListener('pointerdown', showPassword)
             seeEle.addEventListener('pointerup',hidePassword)
         }
     }
-    _getpwd(plain){
-        let star = []
-        this.pwd.map((c)=>{
-            if (plain){
-                star.push(c)
-            }else{
-                star.push('*')
-            }
-        })
-        return star.join('')
-    }
     get value(){
-        return this._getpwd(true)
+        return this.getpwd(true)
     }
     set value(v){
         this.pwd = []
         for (let i=0;i<v.length;i++){
             this.pwd.push(v.substr(i,1))
         }
+    }
+    get star(){
+        return this._star
+    }
+    set star(c){
+        this._star = c
+        this._starLen = c.length
+    }
+    getpwd(plain){
+        let chars = []
+        const self = this
+        this.pwd.map((c)=>{
+            if (plain){
+                chars.push(c)
+            }else{
+                chars.push(self.star)
+            }
+        })
+        return chars.join('')
     }
 }

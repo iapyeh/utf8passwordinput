@@ -1,8 +1,6 @@
 # utf8passwordinput
 
-
-https://github.com/iapyeh/utf8passwordinput/assets/4695577/57d318e1-205a-4f17-86be-623f2e6ae445
-
+https://github.com/iapyeh/utf8passwordinput/assets/4695577/8a462177-8281-4af2-917b-7eb9eb7264bc
 
 ## 專案內容
 HTML <input type="password">

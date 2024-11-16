@@ -1,0 +1,32 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+  <script src="utf8passwordinput.js"></script>
+</head>
+<body>
+<form method="post" name="login" action="">
+  <table>
+    <tr> 
+      <td>登入帳號:<input type="text" name="userid" size="20"></td>
+    </tr>
+    <tr> 
+      <td >登入密碼:<input id="passwd" autocomplete="off" type="password" name="passwd" size="20"></td>
+    </tr>
+    <tr> 
+      <td> 
+        <input type="button" value="送出" onclick="return beforeLogin()">
+        <input type="reset"  value="清除">
+      </td>
+    </tr>
+  </table>
+</form>
+<script>
+  const utf8Pwd = new Utf8PasswordInput(document.getElementById('passwd'))
+   const beforeLogin = ()=>{
+    const pwd = document.querySelector('form input[type="password"]').value
+    alert('密碼是：'+pwd)
+    return false
+  }
+</script>
+</body>
+</html>

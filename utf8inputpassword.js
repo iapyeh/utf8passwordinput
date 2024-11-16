@@ -77,6 +77,15 @@ class Utf8PasswordInput{
      */
     init(){
         const self = this
+        // find the form to hook up "reset" event
+        let p = this.syncedEle.parentNode
+        while (p != document.body){
+            if (p.tagName == 'FORM'){
+                p.addEventListener('reset',()=>{self.value=''})
+                break
+            }
+            p = p.parentNode
+        }
         const setInitialValueFromSyncedEle=(timeout)=>{
             // ele is the password element which browser's password manager would restore password to
             if (!timeout) timeout = 30 * 1000 // try at most 30 seconds
@@ -331,10 +340,5 @@ class Utf8PasswordInput{
             }
         })
         return chars.join('')
-    }
-    // since input element can not receive "reset" event, we have to hook on form's resetevent
-    // eg. document.myform.addEventListener('reset',()=>{utf8PwdInstance.reset()})
-    reset(){
-        this.value = ''
     }
 }

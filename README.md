@@ -37,16 +37,41 @@ Webサーバーのバックグラウンドでのユーザー認証によるUnico
 - [終わりなきパスワードとの闘い、「定期的な変更は不要」という新常識](https://xtech.nikkei.com/atcl/nxt/column/18/00138/091101366/)
 
 
-## 安裝與使用
-主要程式是 utf8passwordinput.js 。使用方式請參考 demo.html 。這兩個檔案可以下載到同一個目錄下，然後直接點開demo.html，就可以在瀏覽器中作測試。
+## 安裝與使用 (v2)
+主要程式是 utf8passwordinput.js 。使用方式請參考 tw-login.html,tw-changepassword.html 。這兩個檔案可以下載到同一個目錄下，然後直接點開demo.html，就可以在瀏覽器中作測試。
+
+- v2版起，使用於登入頁面時，原本form完全不必更動，只需要加入一行 js：
+  ```
+  const utf8Pwd = new Utf8PasswordInput(document.getElementById('passwd'))
+  ```
+- v2版起，使用於變更或設定密碼時，原本form完全不必更動,而且可以使用event，
+  在使用者輸入時即時取得密碼數值與bytes長度作驗證。
+  ```
+  const utf8Pwd1 = new Utf8PasswordInput(document.getElementById('passwd'))
+  const utf8Pwd2 = new Utf8PasswordInput(document.getElementById('passwd2'))
+  utf8Pwd1.on('update',()=>{
+      console.log('value=' + utf8Pwd1.value + ';length=' + utf8Pwd1.length)
+  })
+  utf8Pwd2.on('update',()=>{
+      if (utf8Pwd2.value != utf8Pwd2.value){
+          console.log('兩次密碼不同')
+      }
+  })
+  ```
+  請參考tw-changepassword.html的實際應用。
+
+
 
 ## Installation and Usage
-The main program is utf8passwordinput.js. Please refer to demo.html for usage. These two files can be downloaded to the same directory, and then directly open demo.html to test in the browser.
+The main program is utf8passwordinput.js. Please refer to demo.html for usage. These two files can be downloaded to the same directory, and then directly open tw-login.html,tw-changepassword.html  to test in the browser.
 
 ## インストールと使用方法
-メインプログラムは utf8passwordinput.js です。 使用方法については、demo.htmlを参照してください。 これら 2 つのファイルを同じディレクトリにダウンロードし、demo.html を直接開いてブラウザでテストできます。
+メインプログラムは utf8passwordinput.js です。 使用方法については、demo.htmlを参照してください。 これら 2 つのファイルを同じディレクトリにダウンロードし、tw-login.html,tw-changepassword.html  を直接開いてブラウザでテストできます。
 
 ## History
+- 2024/11/16
+   * v2 Release (v1 and v2 are not compatible) 
+   * feature: simplify usage for loging page and supports for changing/setting password page.
 - 2024/3/18
    * feature: users could set "star" property to change placeholder("*") when inputing password, and the "star" value could be an unicode chareacter.
 - 2024/3/13
